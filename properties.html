@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentConnect Tanzania</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        header nav a:hover, header nav a.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main Content */
+        main {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 10;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: #f8f9ff;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.75rem;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9ff;
+            color: #667eea;
+            border: 2px solid #e0e6ed;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Properties Section */
+        .properties-section {
+            padding: 2rem 0;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        #results-count {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-options label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sort-options select {
+            padding: 0.5rem;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            background: white;
+        }
+
+        /* Property Grid */
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .property-image {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .property-details {
+            padding: 1.5rem;
+        }
+
+        .property-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .property-details p {
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .feature-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .property-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .property-actions .btn-primary,
+        .property-actions .btn-secondary {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-numbers button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            color: #bdc3c7;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            header nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            header nav ul {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .property-actions {
+                flex-direction: column;
+            }
+
+            .property-actions .btn-primary,
+            .property-actions .btn-secondary {
+                flex: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 2rem 0;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .property-card {
+                margin: 0 -10px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .property-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .property-card:nth-child(even) {
+            animation-delay: 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">RentConnect Tanzania</div>
+            <ul>
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="Tenants.html">Tenants</a></li>
+                <li><a href="Landlord.html">Landlord</a></li>
+                <li><a href="properties.html" class="active">Available Properties</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Available Properties</h1>
+                <p>Find your perfect home from our extensive collection</p>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select id="filter-location">
+                            <option value="">All Locations</option>
+                            <option value="dar es salaam">Dar es Salaam</option>
+                            <option value="arusha">Arusha</option>
+                            <option value="mwanza">Mwanza</option>
+                            <option value="dodoma">Dodoma</option>
+                            <option value="mbeya">Mbeya</option>
+                            <option value="zanzibar">Zanzibar</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Property Type</label>
+                        <select id="filter-type">
+                            <option value="">All Types</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="studio">Studio</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="vehicle">Vehicle</option>
+                            <option value="beach house">Beach house</option>
+                            <option value="land">land </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Bedrooms</label>
+                        <select id="filter-bedrooms">
+                            <option value="">Any</option>
+                            <option value="1">1 Bedroom</option>
+                            <option value="2">2 Bedrooms</option>
+                            <option value="3">3 Bedrooms</option>
+                            <option value="4">4+ Bedrooms</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Max Price (TSh)</label>
+                        <input type="number" id="filter-price" placeholder="e.g., 1000000">
+                    </div>
+                    <button class="btn-primary" onclick="applyFilters()">Apply Filters</button>
+                    <button class="btn-secondary" onclick="clearFilters()">Clear All</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="properties-section">
+            <div class="container">
+                <div class="results-header">
+                    <span id="results-count">Showing 12 properties</span>
+                    <div class="sort-options">
+                        <label>Sort by:</label>
+                        <select id="sort-by" onchange="sortProperties()">
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest First</option>
+                            <option value="bedrooms">Most Bedrooms</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="property-grid" id="all-properties">
+                    <!-- Properties will be loaded here -->
+                </div>
+
+                <div class="pagination">
+                    <button class="btn-secondary">Previous</button>
+                    <span class="page-numbers">
+                        <button class="btn-primary">Next</button>
+                    </span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>RentConnect Tanzania</h4>
+                    <p>Making property rental simple and secure across Tanzania.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📧 info@rentconnect.tz</p>
+                    <p>📞 +255 123 456 789</p>
+                    <p>📍 Dar es Salaam, Tanzania</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RentConnect Tanzania. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const allProperties = [
+            {
+                id: 1,
+                title: "Modern 2BR Apartment",
+                location: "Mlimwa C, Dodoma",
+                area: "dar-es-salaam",
+                price: 800000,
+                type: "apartment",
+                bedrooms: 2,
+                bathrooms: 2,
+                image: "🏢",
+                owner: "John Mwalimu",
+                phone: "+255 123 456 789",
+                features: ["WiFi", "Parking", "Security", "Generator"]
+            },
+            {
+                id: 2,
+                title: "Spacious Family House",
+                location: "Mikocheni, Dar es Salaam",
+                area: "zanzibar",
+                price: 1200000,
+                type: "house",
+                bedrooms: 4,
+                bathrooms: 3,
+                image: "🏠",
+                owner: "Mary Kileo",
+                phone: "+255 987 654 321",
+                features: ["Garden", "Parking", "Security", "Water Tank"]
+            },
+            {
+                id: 3,
+                title: "Studio Apartment",
+                location: "Kariakoo, Dar es Salaam",
+                area: "dar-es-salaam",
+                price: 400000,
+                type: "studio",
+                bedrooms: 1,
+                bathrooms: 1,
+                image: "🏠",
+                owner: "Peter Moshi",
+                phone: "+255 555 123 456",
+                features: ["WiFi", "Furnished", "City Center"]
+            },
+            {
+                id: 4,
+                title: "3BR House with Garden",
+                location: "Arusha Town",
+                area: "arusha",
+                price: 900000,
+                type: "house",
+                bedrooms: 3,
+                bathrooms: 2,
+                image: "🏡",
+                owner: "Grace Mollel",
+                phone: "+255 777 888 999",
+                features: ["Garden", "Mountain View", "Quiet Area"]
+            },
+            {
+                id: 5,
+                title: "Luxury Penthouse",
+                location: "Oyster Bay, Dar es Salaam",
+                area: "dar-es-salaam",
+                price: 2500000,
+                type: "apartment",
+                bedrooms: 3,
+                bathrooms: 3,
+                image: "🏢",
+                owner: "David Msigwa",
+                phone: "+255 222 333 444",
+                features: ["Ocean View", "Swimming Pool", "Gym", "24/7 Security"]
+            },
+            {
+                id: 6,
+                title: "Commercial Office Space",
+                location: "Ilala, Dar es Salaam",
+                area: "dar-es-salaam",
+                price: 1500000,
+                type: "commercial",
+                bedrooms: 0,
+                bathrooms: 2,
+                image: "🏢",
+                owner: "Sarah Mbwana",
+                phone: "+255 111 222 333",
+                features: ["Conference Room", "Parking", "High Speed Internet"]
+            },
+            {
+                id: 7,
+                title: "Cozy 1BR Apartment",
+                location: "Mwanza City",
+                area: "mwanza",
+                price: 600000,
+                type: "apartment",
+                bedrooms: 1,
+                bathrooms: 1,
+                image: "🏠",
+                owner: "James Mwanga",
+                phone: "+255 666 777 888",
+                features: ["Lake View", "Furnished", "Balcony"]
+            },
+            {
+                id: 8,
+                title: "Family House",
+                location: "Morogoro",
+                area: "morogoro",
+                price: 750000,
+                type: "house",
+                bedrooms: 3,
+                bathrooms: 2,
+                image: "🏡",
+                owner: "Elizabeth Mgeni",
+                phone: "+255 444 555 666",
+                features: ["Large Yard", "Parking", "Quiet Neighborhood"]
+            },
+            {
+                id: 9,
+                title: "Toyota Noah",
+                location: "UDOM-CIVE,Dodoma",
+                area: "dodoma",
+                price: 200000,
+                type: "vehicle",
+                bedrooms: 0,
+                bathrooms: 0,
+                image: "🚗",
+                owner: "Pendo Phillipo",
+                phone: "+255 666 695 600",
+                features: ["Air Conditioner", "Back and Front Camera", "TV", "Spare tyre", "6 seats"]
+            },
+            {
+            id: 10,
+                title: "Vacation Beach house",
+                location: "Hotel Verde, Zanzibar",
+                area: "zanzibar",
+                price: 12000000,
+                type: "Beach house",
+                bedrooms:6 ,
+                bathrooms: 8,
+                image: "🏠",
+                owner: "Kelvin Kanini",
+                phone: "+255 456 654 321",
+                features: ["Garden", "Parking", "24/7 Security", "Water Tank", "Swimming Pool", "Gym", "Hot Tub", "Wi-Fi", "24/7 servants", "golf field", "basketball court"]
+            },
+            {
+                id: 11,
+                title: "Minivan",
+                location: "Rombo, Arusha",
+                area: "Arusha",
+                price: 320000,
+                type: "vehicle",
+                bedrooms: 0,
+                bathrooms: 0,
+                image: "🚗",
+                owner: "Ulezi Bura",
+                phone: "+255 666 555 600",
+                features: ["Air Conditioner", "Back Camera", "TV", "4 seats"]
+            },
+            {
+            id: 12,
+                title: "Frame",
+                location: "Sinza Madukani, Dar es Salaam",
+                area: "Dar es Salaam",
+                price: 120000,
+                type: "commercial",
+                bedrooms:0,
+                bathrooms:0,
+                image: "🏢",
+                owner: "Alicia Kanini",
+                phone: "+255 980 654 111",
+                features: ["Wi-Fi", "CCTV", "power"]
+                },
+                {
+                id: 13,
+                title: "Marcopolo bus",
+                location: "Muheza, Mbeya",
+                area: "Mbeya",
+                price: 2500000,
+                type: "vehicle",
+                 type: "commercial",
+                bedrooms: 0,
+                bathrooms: 2,
+                image: "🚗",
+                owner: "Frida Amani",
+                phone: "+255 234 125 888",
+                features: ["Air Conditioner", "CCTV", " 2 TVs", "45 seats"]
+            },
+        ];
+
+        let filteredProperties = [...allProperties];
+
+        function loadAllProperties() {
+            const grid = document.getElementById('all-properties');
+            grid.innerHTML = '';
+
+            filteredProperties.forEach(property => {
+                const card = document.createElement('div');
+                card.className = 'property-card';
+                
+                // Handle different property types for display
+                let propertyDetails = '';
+                if (property.type === 'vehicle') {
+                    propertyDetails = `<p> 📍${property.location}</p>`;
+                } else {
+                    propertyDetails = `
+                        <p> 📍${property.location}</p>
+                        <p>🛏️ ${property.bedrooms} ${property.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'} • 🚿 ${property.bathrooms} ${property.bathrooms === 1 ? 'Bathroom' : 'Bathrooms'}</p>
+                    `;
+
+                }
+                
+                card.innerHTML = `
+                    <div class="property-image">${property.image}</div>
+                    <div class="property-details">
+                        <h3>${property.title}</h3>
+                        ${propertyDetails}
+                        <div class="features">
+                            ${property.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                        </div>
+                        <div class="property-price">TSh ${property.price.toLocaleString()}/month</div>
+                        <div class="property-actions">
+                            <button class="btn-primary" onclick="contactOwner(${property.id})">Contact Owner</button>
+                            <button class="btn-secondary" onclick="viewDetails(${property.id})">View Details</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            updateResultsCount();
+        }
+
+        function applyFilters() {
+            const location = document.getElementById('filter-location').value;
+            const type = document.getElementById('filter-type').value;
+            const bedrooms = document.getElementById('filter-bedrooms').value;
+            const maxPrice = document.getElementById('filter-price').value;
+
+            filteredProperties = allProperties.filter(property => {
+                return (!location || property.area.toLowerCase().includes(location.toLowerCase())) &&
+                       (!type || property.type.toLowerCase() === type.toLowerCase()) &&
+                       (!bedrooms || property.bedrooms >= parseInt(bedrooms)) &&
+                       (!maxPrice || property.price <= parseInt(maxPrice));
+            });
+
+            loadAllProperties();
+        }
+
+        function clearFilters() {
+            document.getElementById('filter-location').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-bedrooms').value = '';
+            document.getElementById('filter-price').value = '';
+
+            filteredProperties = [...allProperties];
+            loadAllProperties();
+        }
+
+        function sortProperties() {
+            const sortBy = document.getElementById('sort-by').value;
+
+            switch(sortBy) {
+                case 'price-low':
+                    filteredProperties.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProperties.sort((a, b) => b.price - a.price);
+                    break;
+                case 'bedrooms':
+                    filteredProperties.sort((a, b) => b.bedrooms - a.bedrooms);
+                    break;
+                case 'newest':
+                    filteredProperties.sort((a, b) => b.id - a.id);
+                    break;
+            }
+
+            loadAllProperties();
+        }
+
+        function updateResultsCount() {
+            document.getElementById('results-count').textContent = `Showing ${filteredProperties.length} properties`;
+        }
+
+        function contactOwner(propertyId) {
+            const property = allProperties.find(p => p.id === propertyId);
+            alert(`Contact Details:\nOwner: ${property.owner}\nPhone: ${property.phone}\n\nIn a real app, this would open a messaging system.`);
+        }
+
+        function viewDetails(propertyId) {
+            alert(`Viewing details for property ${propertyId}. In a real app, this would open a detailed property page.`);
+        }
+
+        // Load properties when page loads
+        document.addEventListener('DOMContentLoaded', loadAllProperties);
+    </script>
+</body>
+</html>
